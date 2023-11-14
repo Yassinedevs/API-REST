@@ -1,10 +1,12 @@
 import pymysql
-from app import app
 from config import mysql
 from flask import jsonify
 from flask import flash, request
+from flask import Blueprint
 
-@app.route("/test")
+routes_films= Blueprint('films', __name__)
+
+@routes_films.route("", methods=["GET"])
 def test():
     try:
         conn = mysql.connect()
@@ -20,6 +22,8 @@ def test():
     finally:
         cursor.close() 
         conn.close()  
+
+
 
 
 if __name__ == "__main__":
