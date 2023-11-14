@@ -7,7 +7,7 @@ from flask import Blueprint
 routes_films= Blueprint('films', __name__)
 
 @routes_films.route("", methods=["GET"])
-def test():
+def get_all_films():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -22,9 +22,3 @@ def test():
     finally:
         cursor.close() 
         conn.close()  
-
-
-
-
-if __name__ == "__main__":
-    app.run()

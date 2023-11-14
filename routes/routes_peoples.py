@@ -4,14 +4,14 @@ from flask import jsonify
 from flask import flash, request
 from flask import Blueprint
 
-routes_starships= Blueprint('starships', __name__)
+routes_peoples= Blueprint('peoples', __name__)
 
-@routes_starships.route("", methods=["GET"])
-def get_all_starships():
+@routes_peoples.route("", methods=["GET"])
+def get_all_peoples():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT id, starship_class FROM starships")
+        cursor.execute("SELECT id, name FROM people")
         empRows = cursor.fetchall()
         respone = jsonify(empRows)
         respone.status_code = 200
@@ -22,4 +22,3 @@ def get_all_starships():
     finally:
         cursor.close() 
         conn.close()  
-
