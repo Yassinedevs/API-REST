@@ -9,7 +9,7 @@ def test():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT id, title FROM films")
+        cursor.execute("SELECT id, title, producer FROM films")
         empRows = cursor.fetchall()
         respone = jsonify(empRows)
         respone.status_code = 200
