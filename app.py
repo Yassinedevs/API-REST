@@ -13,7 +13,7 @@ app.register_blueprint(routes_peoples, url_prefix='/peoples')
 app.register_blueprint(routes_planets, url_prefix='/planets')
 app.register_blueprint(routes_species, url_prefix='/species')
 app.register_blueprint(routes_starships, url_prefix='/starships')
-app.register_blueprint(routes_vehicles, url_prefix='/vehicules')
+app.register_blueprint(routes_vehicles, url_prefix='/vehicles')
 
 # Autres configurations, si nécessaires
 
