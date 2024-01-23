@@ -1,19 +1,23 @@
 from flask import Flask
 from flask_cors import CORS, cross_origin
-from routes.routes_films import routes_films
-from routes.routes_peoples import routes_peoples
-from routes.routes_planets import routes_planets
-from routes.routes_species import routes_species
-from routes.routes_starships import routes_starships
-from routes.routes_vehicles import routes_vehicles
+from routes.routes_films import films_namespace
+from routes.routes_peoples import people_namespace
+from routes.routes_planets import planets_namespace
+from routes.routes_species import species_namespace
+from routes.routes_starships import starships_namespace
+from routes.routes_vehicles import vehicles_namespace
+from flask_restx import Api
 from config import app, mysql
 
-app.register_blueprint(routes_films, url_prefix='/films')
-app.register_blueprint(routes_peoples, url_prefix='/peoples')
-app.register_blueprint(routes_planets, url_prefix='/planets')
-app.register_blueprint(routes_species, url_prefix='/species')
-app.register_blueprint(routes_starships, url_prefix='/starships')
-app.register_blueprint(routes_vehicles, url_prefix='/vehicles')
+
+
+api = Api(app, version='1.0', title='Votre API', description='Description de votre API')
+api.add_namespace(films_namespace, path='/films')
+api.add_namespace(people_namespace, path='/peoples')
+api.add_namespace(planets_namespace, path='/planets')
+api.add_namespace(species_namespace, path='/species')
+api.add_namespace(starships_namespace, path='/starships')
+api.add_namespace(vehicles_namespace, path='/vehicles')
 
 # Autres configurations, si nécessaires
 

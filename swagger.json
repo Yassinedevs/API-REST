@@ -1,0 +1,453 @@
+{
+  "swagger": "2.0",
+  "basePath": "/",
+  "paths": {
+      "/films": {
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_films_resource",
+              "tags": [
+                  "films"
+              ]
+          },
+          "post": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "post_films_resource",
+              "tags": [
+                  "films"
+              ]
+          }
+      },
+      "/films/{id}": {
+          "parameters": [
+              {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "integer"
+              }
+          ],
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_film_resource",
+              "tags": [
+                  "films"
+              ]
+          },
+          "delete": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "delete_film_resource",
+              "tags": [
+                  "films"
+              ]
+          },
+          "put": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "put_film_resource",
+              "tags": [
+                  "films"
+              ]
+          }
+      },
+      "/peoples": {
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_peoples_resource",
+              "tags": [
+                  "peoples"
+              ]
+          },
+          "post": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "post_peoples_resource",
+              "tags": [
+                  "peoples"
+              ]
+          }
+      },
+      "/peoples/{id}": {
+          "parameters": [
+              {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "integer"
+              }
+          ],
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_people_resource",
+              "tags": [
+                  "peoples"
+              ]
+          },
+          "delete": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "delete_people_resource",
+              "tags": [
+                  "peoples"
+              ]
+          },
+          "put": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "put_people_resource",
+              "tags": [
+                  "peoples"
+              ]
+          }
+      },
+      "/planets": {
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_planets_resource",
+              "tags": [
+                  "planets"
+              ]
+          },
+          "post": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "post_planets_resource",
+              "tags": [
+                  "planets"
+              ]
+          }
+      },
+      "/planets/{id}": {
+          "parameters": [
+              {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "integer"
+              }
+          ],
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_planet_resource",
+              "tags": [
+                  "planets"
+              ]
+          },
+          "delete": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "delete_planet_resource",
+              "tags": [
+                  "planets"
+              ]
+          },
+          "put": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "put_planet_resource",
+              "tags": [
+                  "planets"
+              ]
+          }
+      },
+      "/species": {
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_planets_resource",
+              "tags": [
+                  "species"
+              ]
+          },
+          "post": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "post_planets_resource",
+              "tags": [
+                  "species"
+              ]
+          }
+      },
+      "/species/{id}": {
+          "parameters": [
+              {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "integer"
+              }
+          ],
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_planet_resource",
+              "tags": [
+                  "species"
+              ]
+          },
+          "delete": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "delete_planet_resource",
+              "tags": [
+                  "species"
+              ]
+          },
+          "put": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "put_planet_resource",
+              "tags": [
+                  "species"
+              ]
+          }
+      },
+      "/starships": {
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_starships_resource",
+              "tags": [
+                  "starships"
+              ]
+          },
+          "post": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "post_starships_resource",
+              "tags": [
+                  "starships"
+              ]
+          }
+      },
+      "/starships/{id}": {
+          "parameters": [
+              {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "integer"
+              }
+          ],
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_starship_resource",
+              "tags": [
+                  "starships"
+              ]
+          },
+          "delete": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "delete_starship_resource",
+              "tags": [
+                  "starships"
+              ]
+          },
+          "put": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "put_starship_resource",
+              "tags": [
+                  "starships"
+              ]
+          }
+      },
+      "/vehicles": {
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_vehicles_resource",
+              "tags": [
+                  "vehicles"
+              ]
+          },
+          "post": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "post_vehicles_resource",
+              "tags": [
+                  "vehicles"
+              ]
+          }
+      },
+      "/vehicles/{id}": {
+          "parameters": [
+              {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "integer"
+              }
+          ],
+          "get": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "get_vehicle_resource",
+              "tags": [
+                  "vehicles"
+              ]
+          },
+          "delete": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "delete_vehicle_resource",
+              "tags": [
+                  "vehicles"
+              ]
+          },
+          "put": {
+              "responses": {
+                  "200": {
+                      "description": "Success"
+                  }
+              },
+              "operationId": "put_vehicle_resource",
+              "tags": [
+                  "vehicles"
+              ]
+          }
+      }
+  },
+  "info": {
+      "title": "Votre API",
+      "version": "1.0",
+      "description": "Description de votre API"
+  },
+  "produces": [
+      "application/json"
+  ],
+  "consumes": [
+      "application/json"
+  ],
+  "tags": [
+      {
+          "name": "films",
+          "description": "Endpoints pour les films"
+      },
+      {
+          "name": "peoples",
+          "description": "Endpoints pour les peoples"
+      },
+      {
+          "name": "planets",
+          "description": "Endpoints pour les peoples"
+      },
+      {
+          "name": "species",
+          "description": "Endpoints pour les species"
+      },
+      {
+          "name": "starships",
+          "description": "Endpoints pour les starships"
+      },
+      {
+          "name": "vehicles",
+          "description": "Endpoints pour les vehicles"
+      }
+  ],
+  "responses": {
+      "ParseError": {
+          "description": "When a mask can't be parsed"
+      },
+      "MaskError": {
+          "description": "When any error occurs on mask"
+      }
+  }
+}
