@@ -29,7 +29,8 @@ def configure_jwt(app):
 
 configure_jwt(app)
 
-api = Api(app, version='1.0', title='Votre API', description='Description de votre API', authorizations=authorizations)
+api = Api(app, version='1.0', title='Votre API', description="""
+Bienvenue sur l'API Star Wars, votre passerelle vers l'univers fascinant de la saga intergalactique. Cette API expose des informations détaillées sur les personnages de Star Wars, permettant aux développeurs d'accéder facilement à une mine de données liées à leurs héros préférés.""")
 api.add_namespace(auth_namespace)
 api.add_namespace(films_namespace, path='/films')
 api.add_namespace(people_namespace, path='/peoples')

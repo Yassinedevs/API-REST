@@ -2,6 +2,7 @@ from flask import jsonify, request, url_for
 from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
+from config import BASE_URL
 from datetime import datetime
 import json
 from flask_jwt_extended import jwt_required
@@ -32,10 +33,10 @@ class FilmsResource(Resource):
             films_list = []
 
             for film in films:
-                species_list = [{'name': fs.specie.name} for fs in film.species]
-                starships_list = [{'starshipClass': fs.starship.starshipClass} for fs in film.films_starships]
-                people_list = [{'name': fp.people.name} for fp in film.films_people]
-                planets_list = [{'name': fp.planet.name} for fp in film.films_planets]
+                species_list = [f"{BASE_URL}/species/{fs.specie.idSpecie}/" for fs in film.species]
+                starships_list = [f"{BASE_URL}/starships/{fs.starship.idStarship}/" for fs in film.films_starships]
+                people_list = [f"{BASE_URL}/peoples/{fp.people.idPeople}/" for fp in film.films_people]
+                planets_list = [f"{BASE_URL}/planets/{fp.planet.idPlanet}/" for fp in film.films_planets]
 
 
                 films_list.append({

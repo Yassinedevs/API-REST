@@ -39,7 +39,32 @@ class StarshipsResource(Resource):
     @jwt_required()
     @starships_namespace.doc(security="JsonWebToken") 
     def post(self):
-        return {"create":"a faire"}
+        try:
+            json_data = request.get_json(force=True)
+            new_starship = Starships(
+                MGLT=json_data.get('MGLT'),
+                starshipClass=json_data.get('starshipClass'),
+                hyperdriveRating=json_data.get('hyperdriveRating'),
+                idTransport=json_data.get('idTransport'),
+            )
+            db.session.add(new_starship)
+            db.session.commit()
+
+            response_data = {
+                        "status": "success",
+                        "action": "Ajouter un starship",
+                        "data": new_starship
+                    }
+                    
+            return jsonify(response_data)
+        except Exception as e:
+            response_data = {
+                        "status": "error",
+                        "action": "Ajouter un starship",
+                        "error": str(e),
+                    }
+                    
+            return jsonify(response_data)
 
 
 @starships_namespace.route("/<int:id>")
