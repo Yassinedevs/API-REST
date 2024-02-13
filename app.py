@@ -7,7 +7,7 @@ from routes.routes_species import species_namespace
 from routes.routes_starships import starships_namespace
 from routes.routes_vehicles import vehicles_namespace
 from flask_restx import Api
-from config import app, mysql
+from config import app
 
 
 

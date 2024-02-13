@@ -1,9 +1,8 @@
-import pymysql
-from config import mysql
-from flask import jsonify
-from flask import flash, request
-from flask import Blueprint
-from flask_restx import Resource, Namespace
+from flask import jsonify, request
+from flask_restx import Resource, Namespace, fields
+from models import *
+from config import db
+
 
 species_namespace = Namespace('species', description='Endpoints pour les species')
 
@@ -12,41 +11,30 @@ species_namespace = Namespace('species', description='Endpoints pour les species
 class PlanetsResource(Resource):
     def get(self):
         try:
-            conn = mysql.connect()
-            cursor = conn.cursor(pymysql.cursors.DictCursor)
-            cursor.execute("SELECT name FROM species")
-            film_rows = cursor.fetchall()
+            species = Species.get_all()
+            species_list = []
+            for specie in species:
+                
+                species_list.append({
+                    'idSpecie': specie.idSpecie,
+                    'classification': specie.classification,
+                    'name': specie.name,
+                    'designation': specie.designation,
+                    'eyeColors': specie.eyeColors,
+                    'people': specie.people,
+                    'skinColors': specie.skinColors,
+                    'language': specie.language,
+                    'hairColors': specie.hairColors,
+                    'averageLifespan': specie.averageLifespan,
+                    'averageHeight': specie.averageHeight,
+                    'created': specie.created.strftime('%Y-%m-%d %H:%M:%S'),
+                    'edited': specie.edited.strftime('%Y-%m-%d %H:%M:%S')
 
-            if film_rows:
-                response_data = {
-                    "status": "success",
-                    "message": "Liste de peoples récupérée avec succès.",
-                    "data": film_rows
-                }
-                status_code = 200
-            else:
-                response_data = {
-                    "status": "success",
-                    "message": "Aucun species trouvé.",
-                    "data": []
-                }
-                status_code = 200
-            
+                })
+
+            return jsonify({'species': species_list})
         except Exception as e:
-            response_data = {
-                "status": "error",
-                "message": "Échec de la récupération de la liste des peoples.",
-                "error_code": "INTERNAL_SERVER_ERROR",
-                "details": str(e)
-            }
-            status_code = 500
-        finally:
-            cursor.close() 
-            conn.close()  
-        
-        response = jsonify(response_data)
-        response.status_code = status_code
-        return response
+            return jsonify({'error': str(e)})
 
     def post(self):
         return {"create":"a faire"}
