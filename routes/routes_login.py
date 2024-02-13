@@ -7,7 +7,7 @@ from flask_restx import reqparse
 from models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 
-auth_namespace = Namespace('auth', description='Endpoints pour les films')
+auth_namespace = Namespace('auth', description='Endpoints pour les authentifications')
 auth_model = auth_namespace.model('Auth', {
     'username': fields.String(description='Nom utilisateur'),
     'password': fields.String(description='Mot de passe'),
