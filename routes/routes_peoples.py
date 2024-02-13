@@ -2,6 +2,7 @@ from flask import jsonify, request
 from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
+from config import BASE_URL
 from datetime import datetime
 
 
@@ -31,38 +32,19 @@ class PeoplesResource(Resource):
             peoples = People.get_all()
             peoples_list = []
             for people in peoples:
-                planet_info = {
-                    'idPlanet': people.planet.idPlanet,
-                    'name': people.planet.name,
-                    'climate': people.planet.climate,
-                    'surfaceWater': people.planet.surfaceWater,
-                    'diameter': people.planet.diameter,
-                    'rotationPeriod': people.planet.rotationPeriod,
-                    'created': people.planet.created.strftime('%Y-%m-%d %H:%M:%S'),
-                    'terrain': people.planet.terrain,
-                    'gravity': people.planet.gravity,
-                    'orbitalPeriod': people.planet.orbitalPeriod,
-                    'population': people.planet.population
-                }
+                planet_info = [f"{BASE_URL}/planets/{people.planet.idPlanet}/"]
 
                 starship_info = None
                 if people.starship:
-                    starship_info = {
-                        'idStarship': people.starship.idStarship,
-                        'MGLT': people.starship.MGLT,
-                        'starshipClass': people.starship.starshipClass,
-                        'hyperdriveRating': people.starship.hyperdriveRating
-                    }
+                    starship_info = [f"{BASE_URL}/starships/{people.starship.idStarship}/"]
 
                 vehicle_info = None
                 if people.vehicle:
-                    vehicle_info = {
-                        'idVehicle': people.vehicle.idVehicle,
-                        'vehicleClass': people.vehicle.vehicleClass
-                    }
+                    vehicle_info = [f"{BASE_URL}/vehicles/{people.vehicle.idVehicle}/"]
+
 
                 peoples_list.append({
-                    'idPeople': people.idPeople,
+                    'url': f"{BASE_URL}/people/{people.idPeople}/",
                     'name': people.name,
                     'gender': people.gender,
                     'skinColor': people.skinColor,
