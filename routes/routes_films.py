@@ -1,9 +1,12 @@
-from flask import jsonify, request
+from flask import jsonify, request, url_for
 from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
 from datetime import datetime
 import json
+from flask_jwt_extended import jwt_required
+
+
 
 films_namespace = Namespace('films', description='Endpoints pour les films')
 film_model = films_namespace.model('FilmModel', {
@@ -21,6 +24,8 @@ film_model = films_namespace.model('FilmModel', {
 
 @films_namespace.route("")
 class FilmsResource(Resource):
+    @jwt_required()
+    @films_namespace.doc(security="JsonWebToken")
     def get(self):
         try:
             films = Films.get_all()
@@ -45,7 +50,6 @@ class FilmsResource(Resource):
                     'starships': starships_list,
                     'peoples': people_list,
                     'planets': planets_list,
-
                 })
                 
             response_data = {
@@ -65,6 +69,8 @@ class FilmsResource(Resource):
                     
             return jsonify(response_data)
 
+    @jwt_required()
+    @films_namespace.doc(security="JsonWebToken")
     @films_namespace.expect(film_model)
     def post(self):
         try:
@@ -121,6 +127,8 @@ class FilmsResource(Resource):
 
 @films_namespace.route("/<int:id>")
 class FilmResource(Resource):
+    @jwt_required()
+    @films_namespace.doc(security="JsonWebToken")
     def get(self, id):
             try:
                 film = Films.get_one_by_id(id)
@@ -160,7 +168,9 @@ class FilmResource(Resource):
                         "error": str(e)
                     }
                 return jsonify(response_data)
-
+    
+    @jwt_required()
+    @films_namespace.doc(security="JsonWebToken")
     def delete(self, id):
         try:
             existing_film = Films.get_one_by_id(id)
@@ -194,6 +204,8 @@ class FilmResource(Resource):
                     
             return jsonify(response_data)
 
+    @jwt_required()
+    @films_namespace.doc(security="JsonWebToken")
     @films_namespace.expect(film_model)
     def post(self, id):
         try:

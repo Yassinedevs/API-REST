@@ -3,7 +3,7 @@ from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
 from datetime import datetime
-
+from flask_jwt_extended import jwt_required
 
 
 
@@ -26,6 +26,8 @@ people_model = people_namespace.model('PeopleModel', {
 
 @people_namespace.route("")
 class PeoplesResource(Resource):
+    @jwt_required()
+    @people_namespace.doc(security="JsonWebToken")
     def get(self):
         try:
             peoples = People.get_all()
@@ -94,6 +96,8 @@ class PeoplesResource(Resource):
                     
             return jsonify(response_data)
 
+    @jwt_required()
+    @people_namespace.doc(security="JsonWebToken")
     @people_namespace.expect(people_model, validate=True)
     def post(self):
         try:
@@ -140,6 +144,8 @@ class PeoplesResource(Resource):
 
 @people_namespace.route("/<int:id>")
 class PeopleResource(Resource):
+    @jwt_required()
+    @people_namespace.doc(security="JsonWebToken")
     def get(self, id):
         try:
             people = People.get_one_by_id(id)
@@ -207,6 +213,8 @@ class PeopleResource(Resource):
                     
             return jsonify(response_data)
 
+    @jwt_required()
+    @people_namespace.doc(security="JsonWebToken")
     def delete(self, id):
         try:
             existing_people = People.get_one_by_id(id)
@@ -240,7 +248,8 @@ class PeopleResource(Resource):
                     
             return jsonify(response_data)
         
-
+    @jwt_required()
+    @people_namespace.doc(security="JsonWebToken")
     @people_namespace.expect(people_model, validate=True)
     def post(self, id):
         try:

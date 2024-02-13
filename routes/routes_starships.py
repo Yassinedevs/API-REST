@@ -2,7 +2,7 @@ from flask import jsonify, request
 from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
-
+from flask_jwt_extended import jwt_required
 
 starships_namespace = Namespace('starships', description='Endpoints pour les starships')
 
@@ -16,6 +16,8 @@ starship_model = starships_namespace.model('StarshipModel', {
 
 @starships_namespace.route("")
 class StarshipsResource(Resource):
+    @jwt_required()
+    @starships_namespace.doc(security="JsonWebToken") 
     def get(self):
         try:
             starships = Starships.get_all()
@@ -33,13 +35,17 @@ class StarshipsResource(Resource):
             return jsonify({'starships': starships_list})
         except Exception as e:
             return jsonify({'error': str(e)})
-
+    
+    @jwt_required()
+    @starships_namespace.doc(security="JsonWebToken") 
     def post(self):
         return {"create":"a faire"}
 
 
 @starships_namespace.route("/<int:id>")
 class StarshipResource(Resource):
+    @jwt_required()
+    @starships_namespace.doc(security="JsonWebToken") 
     def get(self, id):
         try:
             conn = mysql.connect()
@@ -85,7 +91,9 @@ class StarshipResource(Resource):
         response = jsonify(response_data)
         response.status_code = status_code
         return response
-
+    
+    @jwt_required()
+    @starships_namespace.doc(security="JsonWebToken") 
     def delete(self, id):
         try:
             conn = mysql.connect()
@@ -127,6 +135,8 @@ class StarshipResource(Resource):
         response.status_code = status_code
         return response
 
+    @jwt_required()
+    @starships_namespace.doc(security="JsonWebToken") 
     @starships_namespace.expect(starship_model)
     def put(self, id):
         try :

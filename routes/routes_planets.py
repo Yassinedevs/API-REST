@@ -4,7 +4,7 @@ from models import *
 from config import db
 from datetime import datetime
 import json
-
+from flask_jwt_extended import jwt_required
 
 planets_namespace = Namespace('planets', description='Endpoints pour les peoples')
 
@@ -22,6 +22,8 @@ planet_model = planets_namespace.model('Planet', {
 
 @planets_namespace.route("")
 class PlanetsResource(Resource):
+    @jwt_required()
+    @planets_namespace.doc(security="JsonWebToken")
     def get(self):
         try:
             planets = Planets.get_all()
@@ -57,7 +59,8 @@ class PlanetsResource(Resource):
                     
             return jsonify(response_data)
 
-
+    @jwt_required()
+    @planets_namespace.doc(security="JsonWebToken")
     @planets_namespace.expect(planet_model)
     def post(self):
         try:
@@ -97,6 +100,8 @@ class PlanetsResource(Resource):
 
 @planets_namespace.route("/<int:id>")
 class PlanetResource(Resource):
+    @jwt_required()
+    @planets_namespace.doc(security="JsonWebToken")
     def get(self, id):
         try:
             planet = Planets.get_one_by_id(id)
@@ -138,7 +143,9 @@ class PlanetResource(Resource):
                     }
                     
             return jsonify(response_data)
-
+    
+    @jwt_required()
+    @planets_namespace.doc(security="JsonWebToken")
     def delete(self, id):
         try:
             planet_to_delete = Planets.get_one_by_id(id)
@@ -175,7 +182,9 @@ class PlanetResource(Resource):
                     }
                     
             return jsonify(response_data)
-
+    
+    @jwt_required()
+    @planets_namespace.doc(security="JsonWebToken")
     @planets_namespace.expect(planet_model)
     def post(self, id):
         try:

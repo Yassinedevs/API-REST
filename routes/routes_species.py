@@ -2,13 +2,15 @@ from flask import jsonify, request
 from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
-
+from flask_jwt_extended import jwt_required
 
 species_namespace = Namespace('species', description='Endpoints pour les species')
 
 
 @species_namespace.route("")
 class PlanetsResource(Resource):
+    @jwt_required()
+    @species_namespace.doc(security="JsonWebToken")    
     def get(self):
         try:
             species = Species.get_all()
@@ -35,13 +37,17 @@ class PlanetsResource(Resource):
             return jsonify({'species': species_list})
         except Exception as e:
             return jsonify({'error': str(e)})
-
+    
+    @jwt_required()
+    @species_namespace.doc(security="JsonWebToken") 
     def post(self):
         return {"create":"a faire"}
 
 
 @species_namespace.route("/<int:id>")
 class PlanetResource(Resource):
+    @jwt_required()
+    @species_namespace.doc(security="JsonWebToken") 
     def get(self, id):
         try:
             conn = mysql.connect()
@@ -79,10 +85,14 @@ class PlanetResource(Resource):
         response = jsonify(response_data)
         response.status_code = status_code
         return response
-
+    
+    @jwt_required()
+    @species_namespace.doc(security="JsonWebToken") 
     def delete(self, id):
         return {"create":"a faire"}
-
+    
+    @jwt_required()
+    @species_namespace.doc(security="JsonWebToken") 
     def put(self, id):
         return {"create":"a faire"}
 

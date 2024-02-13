@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from routes.routes_films import films_namespace
 from routes.routes_peoples import people_namespace
@@ -6,12 +6,31 @@ from routes.routes_planets import planets_namespace
 from routes.routes_species import species_namespace
 from routes.routes_starships import starships_namespace
 from routes.routes_vehicles import vehicles_namespace
+from routes.routes_login import auth_namespace
+
 from flask_restx import Api
 from config import app
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from flask_restx import Api, Resource
+from functools import wraps
 
+authorizations = {
+    "JsonWebToken":{
+        "type":"apiKey", 
+        "in":"header",
+        "name": "Authorization"
+    }
+}
 
+jwt = JWTManager()
 
-api = Api(app, version='1.0', title='Votre API', description='Description de votre API')
+def configure_jwt(app):
+    jwt.init_app(app)
+
+configure_jwt(app)
+
+api = Api(app, version='1.0', title='Votre API', description='Description de votre API', authorizations=authorizations)
+api.add_namespace(auth_namespace)
 api.add_namespace(films_namespace, path='/films')
 api.add_namespace(people_namespace, path='/peoples')
 api.add_namespace(planets_namespace, path='/planets')

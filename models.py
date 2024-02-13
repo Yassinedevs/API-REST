@@ -41,7 +41,7 @@ class Films(db.Model):
     species = db.relationship('FilmsSpecies', backref='films_species', lazy=True)
     planets = db.relationship('FilmsPlanets', backref='films_planets', lazy=True)
     people = db.relationship('FilmsPeople', backref='films_people', lazy=True)
-    starships = db.relationship('FilmsStarships', backref='films_starships', lazy=True)
+    starships = db.relationship('FilmsStarships', back_populates='film', lazy=True)    
     
     @classmethod
     def get_all(cls):
@@ -190,7 +190,7 @@ class FilmsStarships(db.Model):
     idStarship = db.Column(db.Integer, db.ForeignKey('starships.idStarship'), primary_key=True)
     idFilm = db.Column(db.Integer, db.ForeignKey('films.idFilm'), primary_key=True)
 
-    film = db.relationship('Films', backref='films_starships')
+    film = db.relationship('Films', back_populates='starships', lazy=True)
     starship = db.relationship('Starships', backref='films_starships')
 
 
@@ -213,3 +213,9 @@ class PeopleSpecies(db.Model):
 
     people = db.relationship('People', backref='people_species')
     specie = db.relationship('Species', backref='people_species')
+
+
+class User(db.Model):
+    idUser = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(), unique=True, nullable=False)
+    password = db.Column(db.String(), nullable=False)
