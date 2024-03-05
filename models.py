@@ -143,6 +143,10 @@ class Vehicles(db.Model):
     @classmethod
     def get_all(cls):
         return cls.query.all()
+    
+    @classmethod
+    def get_one_by_id(cls, id):
+        return cls.query.filter(Vehicles.idVehicle==id).first()
 
 
 class Transport(db.Model):
