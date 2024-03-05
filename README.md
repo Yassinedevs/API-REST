@@ -1,3 +1,14 @@
+# Utilisation de l'API 
+Vous devez suivre plusieurs étapes afin de lancer l'API : 
+1. Créer un venv : 
+```python -m venv venv```
+2. Le lancer :
+```.\venv\Scripts\activate```
+3. Installer les librairies : 
+```pip install -r .\requirements.txt```
+4. Enfin, lancer l'application : 
+```python -m app```
+
 # Le Richardson Maturity Model
 
 Le Richardson Maturity Model, également connu sous le nom de "REST Maturity Model" ou "Richardson RESTful Maturity Model", a été proposé par Leonard Richardson en 2008. Il vise à évaluer le niveau de maturité des services web RESTful en fonction de certaines caractéristiques clés. Le modèle est composé de quatre niveaux, chacun représentant une étape vers une conception RESTful plus avancée et évolutive.
