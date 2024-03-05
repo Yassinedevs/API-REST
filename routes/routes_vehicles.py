@@ -119,6 +119,7 @@ class VehicleResource(Resource):
             existing_vehicle = Vehicles.get_one_by_id(id)
 
             if existing_vehicle:
+                FilmsVehicles.query.filter(FilmsVehicles.idVehicle==id).delete()
                 db.session.delete(existing_vehicle)
                 db.session.commit()
 

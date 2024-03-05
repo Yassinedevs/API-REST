@@ -152,6 +152,7 @@ class PlanetResource(Resource):
 
             # Vérifiez si la planète a été trouvée
             if planet_to_delete:
+                FilmsPlanets.query.filter(FilmsPlanets.idPlanet==id).delete()
                 # Marquez la planète à supprimer
                 db.session.delete(planet_to_delete)
 
@@ -160,8 +161,7 @@ class PlanetResource(Resource):
 
                 response_data = {
                         "status": "success",
-                        "action": "Planet supprimé",
-                        "data": planet_to_delete
+                        "action": "Planet supprimé"
                     }
                     
                 return make_response(jsonify(response_data), 200)

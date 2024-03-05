@@ -142,13 +142,13 @@ class StarshipResource(Resource):
             starship_to_delete = Starships.get_one_by_id(id)
 
             if starship_to_delete :
+                FilmsStarships.query.filter(FilmsStarships.idStarship==id).delete()
                 db.session.delete(starship_to_delete)
                 db.session.commit()
 
                 response_data = {
                         "status": "success",
-                        "action": "Starship supprimé",
-                        "data": starship_to_delete
+                        "action": "Starship supprimé"
                     }
                     
                 return make_response(jsonify(response_data), 200)

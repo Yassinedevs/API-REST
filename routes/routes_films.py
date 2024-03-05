@@ -178,13 +178,18 @@ class FilmResource(Resource):
             existing_film = Films.get_one_by_id(id)
 
             if existing_film:
+                FilmsPeople.query.filter(FilmsPeople.idFilm==id).delete()
+                FilmsPlanets.query.filter(FilmsPlanets.idFilm==id).delete()
+                FilmsPeople.query.filter(FilmsPeople.idFilm==id).delete()
+                FilmsSpecies.query.filter(FilmsSpecies.idFilm==id).delete()
+                FilmsStarships.query.filter(FilmsStarships.idFilm==id).delete()
+                FilmsVehicles.query.filter(FilmsVehicles.idFilm==id).delete()
                 db.session.delete(existing_film)
                 db.session.commit()
 
                 response_data = {
                         "status": "success",
                         "action": "Film supprimé",
-                        "data": existing_film
                     }
                     
                 return make_response(jsonify(response_data), 200)
