@@ -172,13 +172,14 @@ class PlanetResource(Resource):
             existing_specie = Species.get_one_by_id(id)
 
             if existing_specie:
+                FilmsSpecies.query.filter(FilmsSpecies.idSpecie==id).delete()
+                PeopleSpecies.query.filter(PeopleSpecies.idSpecie==id).delete()
                 db.session.delete(existing_specie)
                 db.session.commit()
 
                 response_data = {
                         "status": "success",
                         "action": "Specie supprimée",
-                        "data": str(existing_specie)
                     }
                     
                 return make_response(jsonify(response_data), 200)
