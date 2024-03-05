@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, make_response
 from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
@@ -49,7 +49,7 @@ class PlanetsResource(Resource):
                         "data": planets_list
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
         except Exception as e:
             response_data = {
                         "status": "error",
@@ -57,7 +57,7 @@ class PlanetsResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
 
     @jwt_required()
     @planets_namespace.doc(security="JsonWebToken")
@@ -82,12 +82,12 @@ class PlanetsResource(Resource):
             db.session.commit()
 
             response_data = {
-                        "status": "error",
+                        "status": "success",
                         "action": "Planet ajoutée",
                         "data": new_planet
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
 
         except Exception as e:
             response_data = {
@@ -96,7 +96,7 @@ class PlanetsResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
 
 @planets_namespace.route("/<int:id>")
 class PlanetResource(Resource):
@@ -126,7 +126,7 @@ class PlanetResource(Resource):
                     "data": planet_data
                 }
 
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 200)
             else:
                 response_data = {
                             "status": "error",
@@ -134,7 +134,7 @@ class PlanetResource(Resource):
                             "error": "Planet not found"
                         }
                         
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 400)
         except Exception as e:
             response_data = {
                         "status": "error",
@@ -142,7 +142,7 @@ class PlanetResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
     
     @jwt_required()
     @planets_namespace.doc(security="JsonWebToken")
@@ -164,7 +164,7 @@ class PlanetResource(Resource):
                         "data": planet_to_delete
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 200)
             else:
                 response_data = {
                         "status": "error",
@@ -172,7 +172,7 @@ class PlanetResource(Resource):
                         "error": "Planet not found"
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 400)
         
         except Exception as e:
             response_data = {
@@ -181,7 +181,7 @@ class PlanetResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
     
     @jwt_required()
     @planets_namespace.doc(security="JsonWebToken")
@@ -198,7 +198,7 @@ class PlanetResource(Resource):
                         "error": "Planet not found"
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 400)
 
             planet.name = json_data.get('name')
             planet.climate = json_data.get('climate')
@@ -218,7 +218,7 @@ class PlanetResource(Resource):
                         "data": planet
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
 
         except Exception as e:
             response_data = {
@@ -227,4 +227,4 @@ class PlanetResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
