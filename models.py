@@ -122,6 +122,10 @@ class Starships(db.Model):
     @classmethod
     def get_all(cls):
         return cls.query.all()
+
+    @classmethod
+    def get_one_by_id(cls, id):
+        return cls.query.filter(Starships.idStarship==id).first()
     
 
 class Vehicles(db.Model):
@@ -153,6 +157,10 @@ class Transport(db.Model):
     consumables = db.Column(db.String(255))
     created = db.Column(db.DateTime, nullable=False)
     edited = db.Column(db.DateTime, nullable=False)
+
+    @classmethod
+    def get_one_by_id(cls, id):
+        return cls.query.filter(Transport.idTransport==id).first()
 
 
 class FilmsPeople(db.Model):

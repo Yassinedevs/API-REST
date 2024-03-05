@@ -1,11 +1,13 @@
-from flask import jsonify, request
+from flask import jsonify, request, make_response
 from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
+from config import BASE_URL
+from datetime import datetime
+import json
 from flask_jwt_extended import jwt_required
 
 starships_namespace = Namespace('starships', description='Endpoints pour les starships')
-
 starship_model = starships_namespace.model('StarshipModel', {
     'MGLT': fields.String(required=True, description='La vitesse Megalumière par heure'),
     'starshipClass': fields.String(description='Le type de vaisseau'),
@@ -32,9 +34,21 @@ class StarshipsResource(Resource):
                     
                 })
 
-            return jsonify({'starships': starships_list})
+            response_data = {
+                        "status": "success",
+                        "action": "Lister les starships",
+                        "data": starships_list
+                    }
+
+            return jsonify(response_data)
         except Exception as e:
-            return jsonify({'error': str(e)})
+            response_data = {
+                        "status": "error",
+                        "action": "Lister les starships",
+                        "error": str(e),
+                    }
+                    
+            return jsonify(response_data)
     
     @jwt_required()
     @starships_namespace.doc(security="JsonWebToken") 
@@ -73,76 +87,78 @@ class StarshipResource(Resource):
     @starships_namespace.doc(security="JsonWebToken") 
     def get(self, id):
         try:
-            conn = mysql.connect()
-            cursor = conn.cursor(pymysql.cursors.DictCursor)
-            query = '''
-                    SELECT t.name, t.model, t.manufacturer, t.costInCredits, t.length, t.maxAtmospheringSpeed, t.crew, t.passengers, t.cargoCapacity, t.consumables, s.hyperdriveRating, s.MGLT, s.starshipClass, p.idPeople as "pilots", fs.idFilm as "films", t.created, t.edited, s.idStarship as "url"
-                    FROM starships s
-                    LEFT JOIN transport t ON s.idTransport = t.idTransport
-                    LEFT JOIN filmsstarships fs ON s.idStarship = fs.idStarship
-                    LEFT JOIN people p ON s.idStarship = p.idStarship
-                    WHERE s.idStarship = %s;
-                '''
-            cursor.execute(query, (id,))
-            film_rows = cursor.fetchall()
+            starship = Starships.get_one_by_id(id)
+            transport = Transport.get_one_by_id(id)
+            if starship:
+                starship_data = {
+                    'name': transport.name,
+                    'model': transport.model,
+                    'manufacturer': transport.manufacturer,
+                    'costInCredits': transport.costInCredits,
+                    'length': transport.length,
+                    'maxAtmospheringSpeed': transport.maxAtmospheringSpeed,
+                    'crew': transport.crew,
+                    'passengers': transport.passengers,
+                    'cargoCapacity': transport.cargoCapacity,
+                    'consumables': transport.consumables,
+                    'hyperdriveRating': starship.hyperdriveRating,
+                    'MGLT': starship.MGLT,
+                    'starshipClass': starship.starshipClass,
+                    'created': transport.created.strftime('%Y-%m-%d %H:%M:%S'),
+                    'edited': transport.edited.strftime('%Y-%m-%d %H:%M:%S'),
+                    'idStarship': starship.idStarship
+                }
 
-            if film_rows:
                 response_data = {
-                    "status": "success",
-                    "message": "starships récupéré avec succès.",
-                    "data": film_rows
-                }
+                        "status": "success",
+                        "message": "starships récupéré avec succès.",
+                        "data": starship_data
+                    }
                 status_code = 200
+                return make_response(jsonify(response_data), 200)
             else:
-                response_data = {
-                    "status": "success",
-                    "message": "Aucun starships trouvé.",
-                    "data": []
-                }
-                status_code = 200
-            
-        except Exception as e:
-            response_data = {
-                "status": "error",
-                "message": "Échec de la récupération du film.",
-                "error_code": "INTERNAL_SERVER_ERROR",
-                "details": str(e)
-            }
-            status_code = 500
-        finally:
-            cursor.close() 
-            conn.close()  
+                    response_data = {
+                        "status": "success",
+                        "message": "Aucun starships trouvé.",
+                        "data": []
+                    }
+                    status_code = 200
+                    return make_response(jsonify(response_data), 200)
         
-        response = jsonify(response_data)
-        response.status_code = status_code
-        return response
+        except Exception as e:
+                response_data = {
+                    "status": "error",
+                    "message": "Échec de la récupération du starship.",
+                    "error_code": "INTERNAL_SERVER_ERROR",
+                    "details": str(e)
+                }
+                status_code = 500
+                return make_response(jsonify(response_data), 500)
     
     @jwt_required()
     @starships_namespace.doc(security="JsonWebToken") 
     def delete(self, id):
         try:
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM starships WHERE idStarship = %s", (id,))
-            film_rows = cursor.fetchall()
+            starship_to_delete = Starships.get_one_by_id(id)
 
-            if film_rows :
-                cursor = conn.cursor()
-                cursor.execute("DELETE FROM filmsstarships WHERE idStarship = %s", (id,))
-                cursor.execute("DELETE FROM starships WHERE idStarship = %s", (id,))
+            if starship_to_delete :
+                db.session.delete(starship_to_delete)
+                db.session.commit()
+
                 response_data = {
-                    "status": "success",
-                    "message": "starships supprimé avec succès.",
-                    "data": film_rows
-                }
-                status_code = 200
+                        "status": "success",
+                        "action": "Starship supprimé",
+                        "data": starship_to_delete
+                    }
+                    
+                return make_response(jsonify(response_data), 200)
             else :
                 response_data = {
-                    "status": "error",
-                    "message": "Aucun starships trouvé.",
-                    "data": []
-                }
-                status_code = 404
+                        "status": "error",
+                        "action": "Starship supprimée",
+                        "error": "Starship not found"
+                    }
+                return make_response(jsonify(response_data), 404)
 
         except Exception as e:
             response_data = {
@@ -151,37 +167,51 @@ class StarshipResource(Resource):
                 "error_code": "INTERNAL_SERVER_ERROR",
                 "details": str(e)
             }
-            status_code = 500
-        finally:
-            cursor.close() 
-            conn.close()  
-
-        response = jsonify(response_data)
-        response.status_code = status_code
-        return response
+            return make_response(jsonify(response_data), 500)
 
     @jwt_required()
     @starships_namespace.doc(security="JsonWebToken") 
     @starships_namespace.expect(starship_model)
     def put(self, id):
         try :
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            query = '''
-                    UPDATE starships
-                    SET MGLT = %s, starshipClass = %s, hyperdriveRating = %s, idTransport = %s
-                    WHERE idStarship = %s
-                '''
- 
-            values = (
-                json_data.get('MGLT'),
-                json_data.get('starshipClass'),
-                json_data.get('hyperdriveRating'),
-                json_data.get('idTransport'),
-                id
-            )
+            json_data = request.get_json(force=True)
+            starship = Starships.get_one_by_id(id)
+            transport = Transport.get_one_by_id(id)
 
-            cursor.execute(query, values)
+            if not starship:
+                response_data = {
+                        "status": "error",
+                        "action": "Starship modifiée",
+                        "error": "Starship not found"
+                    }
+                    
+                return make_response(jsonify(response_data), 200)
+ 
+            transport.name = json_data.get('name')
+            transport.model = json_data.get('model')
+            transport.manufacturer = json_data.get('manufacturer')
+            transport.costInCredits = json_data.get('costInCredits')
+            transport.length = json_data.get('length')
+            transport.maxAtmospheringSpeed = json_data.get('maxAtmospheringSpeed')
+            transport.crew = json_data.get('crew')
+            transport.passengers = json_data.get('passengers')
+            transport.cargoCapacity = json_data.get('cargoCapacity')
+            transport.consumables = json_data.get('consumables')
+            starship.hyperdriveRating = json_data.get('hyperdriveRating')
+            starship.MGLT = json_data.get('MGLT')
+            starship.starshipClass = json_data.get('starshipClass')
+            transport.created = json_data.get('created')
+            transport.edited = json_data.get('edited')
+
+            db.session.commit()
+
+            response_data = {
+                        "status": "success",
+                        "action": "Starship modifiée",
+                        "data": [starship, transport]
+                    }
+            
+            return make_response(jsonify(response_data), 200)
 
         except Exception as e:
             response_data = {
@@ -190,10 +220,4 @@ class StarshipResource(Resource):
                 "error_code": "INTERNAL_SERVER_ERROR",
                 "details": str(e)
             }
-            status_code = 500
-        finally:
-            cursor.close() 
-            conn.close()  
-
- 
-            return {'message': 'Mise à jour du vaisseau avec succès'}
+            return make_response(jsonify(response_data), 500)
