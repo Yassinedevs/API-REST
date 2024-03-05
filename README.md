@@ -84,24 +84,31 @@ Voici quelques points clés concernant Sentry :
 
 ## Différents types de tests :
 **Résistance :** Mesure la capacité du système à gérer des charges élevées pendant une durée prolongée, en évaluant la stabilité et l'endurance.
+
 **Endurance :** Vérifie la capacité du système à maintenir des performances acceptables sur une période prolongée, en identifiant les éventuelles fuites de ressources.
+
 **Pointe :** Évalue la réaction du système lorsqu'il est soumis à une charge maximale instantanée, permettant de déterminer la capacité maximale du système.
+
 **Performance :** Analyse les performances globales du système sous différentes conditions, en mettant l'accent sur la rapidité et l'efficacité des réponses.
 
 # Outils de monitoring open-source et cloud :
 ## Monitoring Open-Source :
 **Prometheus :** Un système open-source de monitoring et d'alerte, conçu pour gérer les environnements dynamiques.
+
 **Grafana :** Un outil de visualisation open-source qui s'intègre bien avec Prometheus et d'autres sources de données.
 
 ## Monitoring Cloud :
 **AWS CloudWatch :** Offre des fonctionnalités de monitoring pour les services AWS, permettant de collecter et de suivre des métriques, des journaux et des événements.
+
 **Azure Monitor :** Propose des solutions de surveillance complètes pour les services Azure, avec des fonctionnalités avancées telles que l'analyse des performances et la détection des anomalies.
 
 # Outils de test de charge open-source et cloud :
 ## Test de charge Open-Source :
 **Apache JMeter :** Un outil polyvalent qui peut être utilisé pour effectuer des tests de charge sur différents protocoles, y compris HTTP, FTP, JDBC, etc.
+
 **Gatling :** Axé sur la simulation de charges réalistes, Gatling est open-source, basé sur Scala, et offre une bonne extensibilité.
 
 ## Test de charge Cloud :
 **Loader.io :** Un service basé sur le cloud permettant d'effectuer des tests de charge en simulant des utilisateurs réels, avec une interface conviviale.
+
 **BlazeMeter :** Intégré à plusieurs plates-formes cloud, il offre des tests de charge distribués et des analyses détaillées.
