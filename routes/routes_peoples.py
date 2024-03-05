@@ -202,32 +202,38 @@ class PeopleResource(Resource):
             existing_people = People.get_one_by_id(id)
 
             if existing_people:
+                # Supprimer d'abord les enregistrements liés dans les tables de jonction
+                FilmsPeople.query.filter(FilmsPeople.idPeople == id).delete()
+                PeopleSpecies.query.filter(PeopleSpecies.idPeople == id).delete()
+                # Vous pouvez répéter cette opération pour d'autres tables de jonction si nécessaire
+
+                # Ensuite, supprimer l'entrée principale dans la table people
                 db.session.delete(existing_people)
                 db.session.commit()
 
                 response_data = {
-                        "status": "success",
-                        "action": "People supprimé",
-                        "data": existing_people
-                    }
-                    
+                    "status": "success",
+                    "action": "People supprimé",
+                    "data": existing_people
+                }
+
                 return make_response(jsonify(response_data), 200)
             else:
                 response_data = {
-                        "status": "error",
-                        "action": "People supprimé",
-                        "error": "People non trouvé"
-                    }
-                    
+                    "status": "error",
+                    "action": "People supprimé",
+                    "error": "People non trouvé"
+                }
+
                 return make_response(jsonify(response_data), 400)
 
         except Exception as e:
             response_data = {
-                        "status": "error",
-                        "action": "People supprimé",
-                        "error": str(e)
-                    }
-                    
+                "status": "error",
+                "action": "People supprimé",
+                "error": str(e)
+            }
+
             return make_response(jsonify(response_data), 400)
         
     @jwt_required()
