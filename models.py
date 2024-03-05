@@ -107,6 +107,10 @@ class Species(db.Model):
     @classmethod
     def get_all(cls):
         return cls.query.all()
+    
+    @classmethod
+    def get_one_by_id(cls, id):
+        return cls.query.filter(Species.idSpecie==id).first()
 
 class Starships(db.Model):
     __tablename__ = 'starships'

@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, make_response
 from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
@@ -68,7 +68,7 @@ class PeoplesResource(Resource):
                         "data": peoples_list
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
         except Exception as e:
             response_data = {
                         "status": "error",
@@ -76,7 +76,7 @@ class PeoplesResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
 
     @jwt_required()
     @people_namespace.doc(security="JsonWebToken")
@@ -105,12 +105,12 @@ class PeoplesResource(Resource):
             db.session.commit()
 
             response_data = {
-                        "status": "error",
+                        "status": "success",
                         "action": "People ajouté",
                         "data": new_people
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
 
         except Exception as e:
             response_data = {
@@ -119,7 +119,7 @@ class PeoplesResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
 
 
 
@@ -185,7 +185,7 @@ class PeopleResource(Resource):
                         "data": people_data
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
         except Exception as e:
             response_data = {
                         "status": "error",
@@ -193,7 +193,7 @@ class PeopleResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
 
     @jwt_required()
     @people_namespace.doc(security="JsonWebToken")
@@ -211,7 +211,7 @@ class PeopleResource(Resource):
                         "data": existing_people
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 200)
             else:
                 response_data = {
                         "status": "error",
@@ -219,7 +219,7 @@ class PeopleResource(Resource):
                         "error": "People non trouvé"
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 400)
 
         except Exception as e:
             response_data = {
@@ -228,7 +228,7 @@ class PeopleResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
         
     @jwt_required()
     @people_namespace.doc(security="JsonWebToken")
@@ -262,7 +262,7 @@ class PeopleResource(Resource):
                         "data": existing_people
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 200)
             else:
                 response_data = {
                         "status": "error",
@@ -270,7 +270,7 @@ class PeopleResource(Resource):
                         "error": "People not found"
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 400)
 
         except Exception as e:
             response_data = {
@@ -279,6 +279,6 @@ class PeopleResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
 
 

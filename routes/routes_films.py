@@ -1,4 +1,4 @@
-from flask import jsonify, request, url_for
+from flask import jsonify, request, url_for, make_response
 from flask_restx import Resource, Namespace, fields
 from models import *
 from config import db
@@ -59,7 +59,7 @@ class FilmsResource(Resource):
                         "data": films_list
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
 
         except Exception as e:
             response_data = {
@@ -68,7 +68,7 @@ class FilmsResource(Resource):
                         "error": str(e),
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
 
     @jwt_required()
     @films_namespace.doc(security="JsonWebToken")
@@ -114,7 +114,8 @@ class FilmsResource(Resource):
                         "data": new_film
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
+        
         except Exception as e:
             response_data = {
                         "status": "error",
@@ -122,7 +123,7 @@ class FilmsResource(Resource):
                         "error": str(e),
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
 
 
 
@@ -152,14 +153,14 @@ class FilmResource(Resource):
                         "data": film_data
                     }
                     
-                    return jsonify(response_data)
+                    return make_response(jsonify(response_data), 200)
                 else:
                     response_data = {
                         "status": "error",
                         "action": "Lister les films",
                         "error": "Film not found"
                     }
-                    return jsonify(response_data)
+                    return make_response(jsonify(response_data), 400)
     
 
             except Exception as e:
@@ -168,7 +169,7 @@ class FilmResource(Resource):
                         "action": "Lister les films",
                         "error": str(e)
                     }
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 400)
     
     @jwt_required()
     @films_namespace.doc(security="JsonWebToken")
@@ -186,7 +187,7 @@ class FilmResource(Resource):
                         "data": existing_film
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 200)
             else:
                 response_data = {
                         "status": "error",
@@ -194,7 +195,7 @@ class FilmResource(Resource):
                         "error": "Film not found"
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 400)
 
         except Exception as e:
             response_data = {
@@ -203,7 +204,7 @@ class FilmResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 400)
 
     @jwt_required()
     @films_namespace.doc(security="JsonWebToken")
@@ -220,7 +221,7 @@ class FilmResource(Resource):
                         "error": "Film non trouvé",
                     }
                     
-                return jsonify(response_data)
+                return make_response(jsonify(response_data), 400)
 
             film.title=json_data.get('title'),
             film.edited=datetime.now(),
@@ -230,6 +231,8 @@ class FilmResource(Resource):
             film.releaseDate=json_data.get('releaseDate'),
             film.openingCrawl=json_data.get('openingCrawl'),
 
+            db.session.commit()
+
 
             response_data = {
                         "status": "success",
@@ -237,7 +240,7 @@ class FilmResource(Resource):
                         "data": film
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
 
         except Exception as e:
             response_data = {
@@ -246,6 +249,6 @@ class FilmResource(Resource):
                         "error": str(e)
                     }
                     
-            return jsonify(response_data)
+            return make_response(jsonify(response_data), 200)
 
 
