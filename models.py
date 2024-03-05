@@ -41,7 +41,7 @@ class Films(db.Model):
     species = db.relationship('FilmsSpecies', backref='films_species', lazy=True)
     planets = db.relationship('FilmsPlanets', backref='films_planets', lazy=True)
     people = db.relationship('FilmsPeople', backref='films_people', lazy=True)
-    starships = db.relationship('FilmsStarships', back_populates='film', lazy=True)    
+    starships = db.relationship('FilmsStarships', backref='films_starships', lazy=True)
     
     @classmethod
     def get_all(cls):
@@ -190,7 +190,7 @@ class FilmsStarships(db.Model):
     idStarship = db.Column(db.Integer, db.ForeignKey('starships.idStarship'), primary_key=True)
     idFilm = db.Column(db.Integer, db.ForeignKey('films.idFilm'), primary_key=True)
 
-    film = db.relationship('Films', back_populates='starships', lazy=True)
+    film = db.relationship('Films', backref='films_starships')
     starship = db.relationship('Starships', backref='films_starships')
 
 
